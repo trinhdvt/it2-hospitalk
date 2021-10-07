@@ -16,3 +16,10 @@ logging:
       com:
         team1:
           it2hospitalk: DEBUG
+
+server:
+  compression:
+    enabled: true
+  tomcat:
+    threads:
+      max: 50

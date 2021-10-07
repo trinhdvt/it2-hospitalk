@@ -13,9 +13,9 @@ logging:
     org:
       springframework:
         web: INFO
-      com:
-        team1:
-          it2hospitalk: DEBUG
+    com:
+      team1:
+        it2hospitalk: DEBUG
 
 server:
   compression:

@@ -1,1 +1,18 @@
+spring:
+  config:
+    import: classpath:application-private.yml
+  jpa:
+    show-sql: false
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
 
+logging:
+  level:
+    org:
+      springframework:
+        web: INFO
+      com:
+        team1:
+          it2hospitalk: DEBUG

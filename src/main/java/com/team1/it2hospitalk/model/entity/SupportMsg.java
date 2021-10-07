@@ -39,6 +39,13 @@ public class SupportMsg {
 
     private Date closedAt;
 
+    @PrePersist
+    void prePersist() {
+        if (this.createdAt == null) {
+            this.createdAt = new Date();
+        }
+    }
+
     @Override
     public String toString() {
         return "SupportMsg{" +

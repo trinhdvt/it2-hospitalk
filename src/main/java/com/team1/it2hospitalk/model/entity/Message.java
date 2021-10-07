@@ -29,6 +29,11 @@ public class Message {
 
     private Date createdAt;
 
+    @PrePersist
+    void prePersist() {
+        this.createdAt = new Date();
+    }
+
     @Override
     public String toString() {
         return "Message{" +

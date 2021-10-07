@@ -38,9 +38,18 @@ public class Channel {
     )
     private List<User> users = new ArrayList<>();
 
-
     @OneToOne(mappedBy = "channel")
     private SupportMsg supportMsg;
+
+    @PrePersist
+    void prePersist() {
+        this.createdAt = new Date();
+    }
+
+    @PreUpdate
+    void preUpdate() {
+        this.updatedAt = new Date();
+    }
 
     @Override
     public String toString() {

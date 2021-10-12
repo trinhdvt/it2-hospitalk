@@ -8,6 +8,15 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
 
+security:
+  jwt:
+    secret-key: KhongSaoChuPhoHo
+    expire-length: 6000000
+    prefix: Bearer
+  refresh-token:
+    cookie-name: refresh-token
+    cookie-length: 15552000
+
 logging:
   level:
     org:

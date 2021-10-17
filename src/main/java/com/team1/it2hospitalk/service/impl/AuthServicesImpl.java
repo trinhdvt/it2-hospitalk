@@ -2,7 +2,9 @@ package com.team1.it2hospitalk.service.impl;
 
 import com.team1.it2hospitalk.exception.HttpError;
 import com.team1.it2hospitalk.exception.UnauthorizedError;
+import com.team1.it2hospitalk.model.entity.Role;
 import com.team1.it2hospitalk.model.entity.User;
+import com.team1.it2hospitalk.model.request.CodeDTO;
 import com.team1.it2hospitalk.model.request.LoginDTO;
 import com.team1.it2hospitalk.repository.UserRepository;
 import com.team1.it2hospitalk.security.SecurityServices;
@@ -57,5 +59,26 @@ public class AuthServicesImpl implements IAuthServices {
     @Override
     public String reCreateToken(String clientToken, String accessToken, HttpServletResponse resp) {
         return null;
+    }
+
+    @Override
+    public CodeDTO createUserCode(CodeDTO codeDTO, Role creatorRole) {
+        // if creator is admin then create user will be manager. And so on
+        Role userRole = (creatorRole == Role.ADMIN) ? Role.MANAGER : Role.USER;
+
+        // constructor new user
+        User newUser = User.builder()
+                .fullName(codeDTO.getName())
+                .address(codeDTO.getLocation())
+                .job(codeDTO.getDepartment())
+                .role(userRole)
+                .build();
+
+        // save to database
+        newUser = userRepository.saveAndFlush(newUser);
+
+        // get the code and return to client with same payload
+        codeDTO.setCode(newUser.getId());
+        return codeDTO;
     }
 }

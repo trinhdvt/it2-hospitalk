@@ -7,11 +7,13 @@ import com.team1.it2hospitalk.model.entity.User;
 import com.team1.it2hospitalk.model.request.CodeDTO;
 import com.team1.it2hospitalk.model.request.LoginDTO;
 import com.team1.it2hospitalk.model.request.SignUpDTO;
+import com.team1.it2hospitalk.model.response.UserDTO;
 import com.team1.it2hospitalk.repository.UserRepository;
 import com.team1.it2hospitalk.security.SecurityServices;
 import com.team1.it2hospitalk.service.IAuthServices;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.LockedException;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @Transactional
@@ -113,5 +116,13 @@ public class AuthServicesImpl implements IAuthServices {
         user = userRepository.saveAndFlush(user);
 
         return securityServices.createAccessJwt(user);
+    }
+
+    @Override
+    public List<UserDTO> getAvailableCodes(Pageable pageable) {
+
+        return userRepository.getAllByUsernameIsNull(pageable)
+                .map(UserDTO::toUserDTO)
+                .getContent();
     }
 }

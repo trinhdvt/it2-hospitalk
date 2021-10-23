@@ -6,6 +6,7 @@ import com.team1.it2hospitalk.model.entity.Role;
 import com.team1.it2hospitalk.model.entity.User;
 import com.team1.it2hospitalk.model.request.CodeDTO;
 import com.team1.it2hospitalk.model.request.LoginDTO;
+import com.team1.it2hospitalk.model.request.SignUpDTO;
 import com.team1.it2hospitalk.repository.UserRepository;
 import com.team1.it2hospitalk.security.SecurityServices;
 import com.team1.it2hospitalk.service.IAuthServices;
@@ -80,5 +81,37 @@ public class AuthServicesImpl implements IAuthServices {
         // get the code and return to client with same payload
         codeDTO.setCode(newUser.getId());
         return codeDTO;
+    }
+
+    @Override
+    public User verifyCode(String code) {
+        User user = userRepository.findById(code).orElse(null);
+
+        // code is already used
+        if (user == null || user.getUsername() != null) {
+            throw new UnauthorizedError("Invalid code!");
+        }
+
+        return user;
+    }
+
+    @Override
+    public String signUp(SignUpDTO signUpDTO) {
+        String username = signUpDTO.getUsername();
+        String password = signUpDTO.getPassword();
+        String code = signUpDTO.getCode();
+
+        User user = verifyCode(code);
+
+        boolean isUsernameExist = userRepository.existsByUsername(username);
+        if (isUsernameExist) {
+            throw new HttpError("Username is already existed", HttpStatus.CONFLICT);
+        }
+
+        user.setUsername(username);
+        user.setPassword(passwordEncoder.encode(password));
+        user = userRepository.saveAndFlush(user);
+
+        return securityServices.createAccessJwt(user);
     }
 }

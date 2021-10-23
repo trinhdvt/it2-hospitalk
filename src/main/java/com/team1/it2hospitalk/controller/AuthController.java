@@ -3,6 +3,7 @@ package com.team1.it2hospitalk.controller;
 import com.team1.it2hospitalk.model.entity.Role;
 import com.team1.it2hospitalk.model.request.CodeDTO;
 import com.team1.it2hospitalk.model.request.LoginDTO;
+import com.team1.it2hospitalk.model.request.SignUpDTO;
 import com.team1.it2hospitalk.service.IAuthServices;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -44,5 +43,21 @@ public class AuthController {
 
         CodeDTO createdCode = authServices.createUserCode(codeDTO, creatorRole);
         return ResponseEntity.ok(createdCode);
+    }
+
+    @GetMapping(value = "/code/{code}")
+    public ResponseEntity<?> verifyCode(@PathVariable("code") String code) {
+        authServices.verifyCode(code);
+
+        // no error occurred -> valid code
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<?> signUp(@Valid SignUpDTO signUpDTO) {
+        String jwt = authServices.signUp(signUpDTO);
+
+        Map<String, String> respBody = Collections.singletonMap("token", jwt);
+        return ResponseEntity.ok(respBody);
     }
 }

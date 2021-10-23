@@ -1,6 +1,7 @@
 package com.team1.it2hospitalk.service.impl;
 
 import com.team1.it2hospitalk.exception.HttpError;
+import com.team1.it2hospitalk.exception.NotFoundError;
 import com.team1.it2hospitalk.exception.UnauthorizedError;
 import com.team1.it2hospitalk.model.entity.Role;
 import com.team1.it2hospitalk.model.entity.User;
@@ -92,7 +93,7 @@ public class AuthServicesImpl implements IAuthServices {
 
         // code is already used
         if (user == null || user.getUsername() != null) {
-            throw new UnauthorizedError("Invalid code!");
+            throw new NotFoundError("Code not found!");
         }
 
         return user;

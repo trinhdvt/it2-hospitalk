@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @NoArgsConstructor
@@ -44,6 +45,10 @@ public class User {
     @Builder.Default
     private boolean isBlock = false;
 
+    private Date createdAt;
+
+    private Date updatedAt;
+
     @OneToOne(mappedBy = "manager")
     private Hospital manageHospital;
 
@@ -65,5 +70,16 @@ public class User {
                 ", fullName='" + fullName + '\'' +
                 ", role=" + role +
                 '}';
+    }
+
+    @PrePersist
+    void prePersist() {
+        this.createdAt = new Date();
+        this.updatedAt = new Date();
+    }
+
+    @PreUpdate
+    void preUpdate() {
+        this.updatedAt = new Date();
     }
 }

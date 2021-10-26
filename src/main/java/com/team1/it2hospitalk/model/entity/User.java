@@ -52,6 +52,10 @@ public class User {
     @OneToOne(mappedBy = "manager")
     private Hospital manageHospital;
 
+    @ManyToOne
+    @JoinColumn(name = "hospital_id")
+    private Hospital workHospital;
+
     @OneToMany(mappedBy = "creator")
     @OrderBy("updatedAt DESC, createdAt DESC")
     private List<Channel> createdChannels = new ArrayList<>();

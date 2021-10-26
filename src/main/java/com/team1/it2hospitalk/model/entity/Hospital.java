@@ -3,6 +3,7 @@ package com.team1.it2hospitalk.model.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,6 +25,9 @@ public class Hospital {
     @OneToOne
     @JoinColumn(name = "manager_id", referencedColumnName = "id")
     private User manager;
+
+    @OneToMany(mappedBy = "workHospital")
+    private List<User> staff;
 
     @Override
     public String toString() {

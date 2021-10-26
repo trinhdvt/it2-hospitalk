@@ -21,6 +21,7 @@ public class UserDTO extends UserPersonalDTO {
     private boolean isBlock;
     private Date createdAt;
     private Date updatedAt;
+    private String hospitalName;
 
     public static UserDTO toUserDTO(User user) {
         if (user == null)
@@ -34,9 +35,15 @@ public class UserDTO extends UserPersonalDTO {
                 .isBlock(user.isBlock())
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())
+                .hospitalName(user.getWorkHospital().getName())
                 .build();
 
         userDTO.setAvatarUrl(user.getAvatarUrl());
+        userDTO.setJob(user.getJob());
+        userDTO.setAge(user.getAge());
+        userDTO.setAddress(userDTO.getAddress());
+        userDTO.setPhoneNumber(userDTO.getPhoneNumber());
+
         return userDTO;
     }
 }

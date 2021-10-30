@@ -12,7 +12,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
-@JsonInclude(JsonInclude.Include.NON_NULL)
+// @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDTO extends UserPersonalDTO {
     private String code;
     private String fullName;
@@ -35,7 +35,7 @@ public class UserDTO extends UserPersonalDTO {
                 .isBlock(user.isBlock())
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())
-                .hospitalName(user.getWorkHospital().getName())
+                .hospitalName(user.getWorkHospital() != null ? user.getWorkHospital().getName() : null)
                 .build();
 
         userDTO.setAvatarUrl(user.getAvatarUrl());

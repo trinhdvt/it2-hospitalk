@@ -3,6 +3,7 @@ package com.team1.it2hospitalk.model.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @NoArgsConstructor
@@ -22,12 +23,27 @@ public class Hospital {
 
     private String address;
 
+    private Date createdAt;
+
+    private Date updatedAt;
+
     @OneToOne
     @JoinColumn(name = "manager_id", referencedColumnName = "id")
     private User manager;
 
     @OneToMany(mappedBy = "workHospital")
     private List<User> staff;
+
+    @PrePersist
+    void prePersist() {
+        this.createdAt = new Date();
+        this.updatedAt = new Date();
+    }
+
+    @PreUpdate
+    void preUpdate() {
+        this.updatedAt = new Date();
+    }
 
     @Override
     public String toString() {

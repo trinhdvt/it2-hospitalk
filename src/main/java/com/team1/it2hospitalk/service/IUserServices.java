@@ -9,5 +9,7 @@ public interface IUserServices {
 
     List<UserDTO> getListOfAllUser(Pageable pageable);
 
+    List<UserDTO> getListOfAllUser(int hospitalId, Pageable pageable);
+
     List<UserDTO> getListOfAllUserManageBy(String username, Pageable pageable);
 }

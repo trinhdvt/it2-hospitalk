@@ -24,4 +24,11 @@ public class SpMsgServicesImpl implements ISpMsgServices {
                 .map(SupportMsgDTO::toDTO)
                 .getContent();
     }
+
+    @Override
+    public List<SupportMsgDTO> getListOfSpMsg(int hospitalId, Pageable pageable) {
+        return supportMsgRepo.getAllByCreator_ManageHospital_Id(hospitalId, pageable)
+                .map(SupportMsgDTO::toDTO)
+                .getContent();
+    }
 }

@@ -9,4 +9,5 @@ public interface SupportMsgRepo extends JpaRepository<SupportMsg, Integer> {
 
     Page<SupportMsg> getAllByCreator_ManageHospital_Id(int hospitalId, Pageable pageable);
 
+    Page<SupportMsg> getAllByCreator_Username(String username, Pageable pageable);
 }

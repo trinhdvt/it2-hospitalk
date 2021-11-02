@@ -1,5 +1,6 @@
 package com.team1.it2hospitalk.controller;
 
+import com.team1.it2hospitalk.model.entity.Role;
 import com.team1.it2hospitalk.model.response.SupportMsgDTO;
 import com.team1.it2hospitalk.service.ISpMsgServices;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,15 +27,24 @@ public class SpMsgController {
 
     private final ISpMsgServices spMsgServices;
 
-    // TODO: Allow manager to get all created help
     @RequestMapping("/help")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> getListOfUser(@PageableDefault(sort = {"createdAt"},
-            direction = Direction.DESC) Pageable pageable) {
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
+    public ResponseEntity<?> getListOfHelpMsg(
+            @PageableDefault(sort = {"createdAt"},
+                    direction = Direction.DESC,
+                    size = 65535) Pageable pageable, Authentication auth) {
 
-        List<SupportMsgDTO> listOfSpMsg = spMsgServices.getListOfSpMsg(pageable);
+        boolean isAdmin = auth.getAuthorities().contains(Role.ADMIN);
+        if (isAdmin) {
+            List<SupportMsgDTO> listOfSpMsg = spMsgServices.getListOfSpMsg(pageable);
 
-        return ResponseEntity.ok(listOfSpMsg);
+            return ResponseEntity.ok(listOfSpMsg);
+        } else {
+            String managerUser = auth.getName();
+            List<SupportMsgDTO> listOfSpMsg = spMsgServices.getListOfSpMsgByCreator(managerUser, pageable);
+
+            return ResponseEntity.ok(listOfSpMsg);
+        }
     }
 
 

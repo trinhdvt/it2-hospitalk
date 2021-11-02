@@ -11,4 +11,6 @@ public interface ISpMsgServices {
 
     List<SupportMsgDTO> getListOfSpMsg(int hospitalId, Pageable pageable);
 
+    List<SupportMsgDTO> getListOfSpMsgByCreator(String managerUser, Pageable pageable);
+
 }

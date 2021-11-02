@@ -9,10 +9,8 @@ COPY pom.xml .
 RUN ./mvnw dependency:go-offline -B
 
 COPY src src
-RUN chmod u+x ./mvnw
-RUN ./mvnw package -DskipTests
 
-RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
+RUN chmod u+x ./mvnw && ./mvnw package -DskipTests && mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
 FROM openjdk:8-jre-alpine
 

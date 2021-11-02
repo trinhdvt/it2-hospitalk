@@ -17,4 +17,6 @@ public interface UserRepository extends JpaRepository<User, String> {
     Page<User> getAllByUsernameIsNotNull(Pageable pageable);
 
     Page<User> getAllByWorkHospital(Hospital workHospital, Pageable pageable);
+
+    Page<User> getAllByWorkHospital_Id(int hospitalId, Pageable pageable);
 }

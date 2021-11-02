@@ -27,8 +27,9 @@ public class UserController {
 
     @RequestMapping("/user")
     @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
-    public ResponseEntity<?> getListOfUser(@PageableDefault(sort = {"fullName"}) Pageable pageable,
-                                           Authentication auth) {
+    public ResponseEntity<?> getListOfUser(
+            @PageableDefault(sort = {"fullName"},
+                    size = 65535) Pageable pageable, Authentication auth) {
 
         boolean isAdmin = auth.getAuthorities().contains(Role.ADMIN);
         if (isAdmin) {

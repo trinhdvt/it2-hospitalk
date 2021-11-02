@@ -26,6 +26,13 @@ public class ChannelServicesImpl implements IChannelServices {
     }
 
     @Override
+    public List<ChannelDTO> getAllChannels(int hospitalId, Pageable pageable) {
+        return channelRepo.getChannelByCreator_ManageHospital_Id(hospitalId, pageable)
+                .map(ChannelDTO::toChannelDTO)
+                .getContent();
+    }
+
+    @Override
     public List<ChannelDTO> getAllChannelCreatedBy(String username, Pageable pageable) {
         return channelRepo.getChannelByCreator_Username(username, pageable)
                 .map(ChannelDTO::toChannelDTO)

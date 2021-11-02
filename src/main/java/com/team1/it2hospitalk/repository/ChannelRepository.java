@@ -9,4 +9,5 @@ public interface ChannelRepository extends JpaRepository<Channel, Integer> {
 
     Page<Channel> getChannelByCreator_Username(String username, Pageable pageable);
 
+    Page<Channel> getChannelByCreator_ManageHospital_Id(int hospitalId, Pageable pageable);
 }

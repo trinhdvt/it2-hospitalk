@@ -9,5 +9,7 @@ public interface IChannelServices {
 
     List<ChannelDTO> getAllChannels(Pageable pageable);
 
+    List<ChannelDTO> getAllChannels(int hospitalId, Pageable pageable);
+
     List<ChannelDTO> getAllChannelCreatedBy(String username, Pageable pageable);
 }

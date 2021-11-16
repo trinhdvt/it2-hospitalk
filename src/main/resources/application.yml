@@ -10,6 +10,10 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm
     time-zone: Asia/Ho_Chi_Minh
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 
 security:
   jwt:
@@ -34,4 +38,5 @@ server:
     enabled: true
   tomcat:
     threads:
-      max: 50
+      max: 10
+  port: ${PORT:8080}

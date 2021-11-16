@@ -66,6 +66,9 @@ public class User {
     @OneToMany(mappedBy = "creator")
     private List<SupportMsg> supportMsgs = new ArrayList<>();
 
+    @OneToMany(mappedBy = "sendUser")
+    private List<TransferForm> sentForms = new ArrayList<>();
+
     @Override
     public String toString() {
         return "User{" +

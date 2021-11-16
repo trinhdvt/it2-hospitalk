@@ -34,6 +34,13 @@ public class Hospital {
     @OneToMany(mappedBy = "workHospital")
     private List<User> staff;
 
+
+    @OneToMany(mappedBy = "sendHospital")
+    private List<TransferForm> sentForms;
+
+    @OneToMany(mappedBy = "receiveHospital")
+    private List<TransferForm> receivedForms;
+
     @PrePersist
     void prePersist() {
         this.createdAt = new Date();

@@ -11,7 +11,7 @@ import java.util.Date;
 @Setter
 @Getter
 @Entity
-@Table(name = "support_message")
+@Table(name = "it2_support_message")
 public class SupportMsg {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "channel")
+@Table(name = "it2_channel")
 public class Channel {
 
     @Id
@@ -32,7 +32,7 @@ public class Channel {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "channel_user",
+            name = "it2_channel_user",
             joinColumns = @JoinColumn(name = "channel_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )

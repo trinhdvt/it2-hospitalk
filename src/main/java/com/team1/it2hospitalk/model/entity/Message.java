@@ -1,5 +1,6 @@
 package com.team1.it2hospitalk.model.entity;
 
+import com.team1.it2hospitalk.event.NewMessageEvent;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.util.Date;
 @Builder
 @Entity
 @Table(name = "it2_message")
+@EntityListeners(NewMessageEvent.class)
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,11 +30,6 @@ public class Message {
     private String body;
 
     private Date createdAt;
-
-    @PrePersist
-    void prePersist() {
-        this.createdAt = new Date();
-    }
 
     @Override
     public String toString() {

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Hello WebSocket</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"
+            integrity="sha512-iKDtgDyTHjAitUDdLljGhenhPwrbBfqTKWO1mkhSFH3A7blITC9MhYon6SjnMhp4o0rADGw9yAC6EW4t5a4K3g=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+
+<button id="connect-btn" onclick="connect()">Connect Socket</button>
+<label for="room-txb">RoomID</label>
+<input type="text" id="room-txb">
+<button onclick="subscribe_room()">Connect Room</button>
+<button id="disconnect" onclick="unsubscribe_notify();disconnect()">Disconnect</button>
+
+<script type="text/javascript">
+
+    let ws = null;
+    let messageSubscription = null;
+
+    function connect() {
+
+        const socket = new SockJS("http://localhost:8080/socket-server");
+
+        ws = Stomp.over(socket);
+
+        ws.connect({}, function (frame) {
+            console.log(frame);
+        }, function (error) {
+            console.log(error);
+        });
+    }
+
+    function subscribe_room() {
+        if (ws != null) {
+            const roomID = document.getElementById("room-txb").value;
+
+            messageSubscription = ws.subscribe(`/topic/message/${roomID}`, function (message) {
+                console.log(JSON.parse(message.body));
+            });
+        }
+    }
+
+
+    function unsubscribe_notify() {
+        if (messageSubscription != null) {
+            messageSubscription.unsubscribe();
+        }
+    }
+
+    function disconnect() {
+        if (ws != null) {
+            ws.disconnect();
+        }
+
+    }
+</script>
+</body>
+</html>

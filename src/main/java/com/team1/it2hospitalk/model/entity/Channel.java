@@ -30,13 +30,17 @@ public class Channel {
 
     private Date updatedAt;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(
             name = "it2_channel_user",
             joinColumns = @JoinColumn(name = "channel_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private List<User> users = new ArrayList<>();
+
+    @OneToMany(mappedBy = "channel")
+    @OrderBy("createdAt DESC")
+    private List<Message> messages = new ArrayList<>();
 
     @OneToOne(mappedBy = "channel")
     private SupportMsg supportMsg;

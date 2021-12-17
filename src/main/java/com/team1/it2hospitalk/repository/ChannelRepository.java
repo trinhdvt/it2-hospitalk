@@ -4,6 +4,9 @@ import com.team1.it2hospitalk.model.entity.Channel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 public interface ChannelRepository extends JpaRepository<Channel, Integer> {
 

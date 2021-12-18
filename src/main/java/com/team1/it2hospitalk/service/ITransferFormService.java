@@ -10,4 +10,6 @@ public interface ITransferFormService {
     com.team1.it2hospitalk.model.response.TransferFormDTO createTransferForm(String username, TransferFormPayload formDTO);
 
     List<TransferFormDTO> getCreatedTransferFromByUser(String username);
+
+    List<TransferFormDTO> getReceivedTransferFromByUser(String username);
 }

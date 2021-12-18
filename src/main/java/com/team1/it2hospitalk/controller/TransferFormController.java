@@ -1,5 +1,6 @@
 package com.team1.it2hospitalk.controller;
 
+import com.team1.it2hospitalk.model.entity.Role;
 import com.team1.it2hospitalk.model.request.TransferFormPayload;
 import com.team1.it2hospitalk.model.response.TransferFormDTO;
 import com.team1.it2hospitalk.service.ITransferFormService;
@@ -36,10 +37,19 @@ public class TransferFormController {
     }
 
     @GetMapping("/transfer-form")
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('USER', 'MANAGER')")
     public ResponseEntity<?> getCreatedTransferForm(Authentication auth) {
         String username = auth.getName();
-        List<TransferFormDTO> listOfDTOs = transferService.getCreatedTransferFromByUser(username);
+        boolean isManager = auth.getAuthorities().contains(Role.MANAGER);
+
+        // user get created transfer form
+        List<TransferFormDTO> listOfDTOs;
+        if (!isManager) {
+            listOfDTOs = transferService.getCreatedTransferFromByUser(username);
+        } else {
+            // manager get received transfer form
+            listOfDTOs = transferService.getReceivedTransferFromByUser(username);
+        }
 
         return ResponseEntity.ok(listOfDTOs);
     }

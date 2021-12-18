@@ -57,4 +57,13 @@ public class TransferFormServiceImpl implements ITransferFormService {
                 .map(TransferFormDTO::toDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<TransferFormDTO> getReceivedTransferFromByUser(String username) {
+        List<TransferForm> transferFormList = transferFormRepo.getAllByReceiveHospital_Manager_Username(username);
+
+        return transferFormList.stream()
+                .map(TransferFormDTO::toDTO)
+                .collect(Collectors.toList());
+    }
 }

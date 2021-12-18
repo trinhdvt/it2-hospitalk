@@ -9,4 +9,6 @@ public interface TransferFormRepository extends JpaRepository<TransferForm, Inte
 
     List<TransferForm> getAllBySendUser_Username(String username);
 
+    List<TransferForm> getAllByReceiveHospital_Manager_Username(String username);
+
 }

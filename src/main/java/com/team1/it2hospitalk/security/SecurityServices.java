@@ -29,7 +29,7 @@ public class SecurityServices {
     private String SECRET_KEY;
 
     @Value("${security.jwt.expire-length}")
-    private int JWT_EXPIRE_TIME;
+    private long JWT_EXPIRE_TIME;
 
     private final UserDetailsServiceImpl userDetailsService;
 

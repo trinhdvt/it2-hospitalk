@@ -6,6 +6,7 @@ import com.team1.it2hospitalk.service.impl.StorageService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -22,6 +23,9 @@ public class FileController {
 
     private final StorageService storageService;
     private final ResourceRepository resourceRepo;
+    @Value("${cloud.aws.public.base-url}")
+    private String fileBaseUrl;
+
 
     @PostMapping
     @PreAuthorize("isAuthenticated()")
@@ -29,7 +33,7 @@ public class FileController {
         String filename = System.currentTimeMillis() + "_" + StringUtils.deleteWhitespace(file.getOriginalFilename());
 
         storageService.uploadFile(file, filename);
-        return ResponseEntity.ok(Collections.singletonMap("fileName", filename));
+        return ResponseEntity.ok(Collections.singletonMap("fileUrl", fileBaseUrl + "/" + filename));
     }
 
     @GetMapping("/{fileName}")

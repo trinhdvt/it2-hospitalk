@@ -45,6 +45,8 @@ public class TransferForm {
 
     private Date endTime;
 
+    private String doctorDiagnosis;
+
     private String patientInformation;
 
     private String medicalSummary;

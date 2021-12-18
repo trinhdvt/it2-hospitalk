@@ -1,5 +1,6 @@
 package com.team1.it2hospitalk.service.impl;
 
+import com.team1.it2hospitalk.exception.NotFoundError;
 import com.team1.it2hospitalk.model.entity.Hospital;
 import com.team1.it2hospitalk.model.entity.TransferForm;
 import com.team1.it2hospitalk.model.entity.User;
@@ -31,7 +32,7 @@ public class TransferFormServiceImpl implements ITransferFormService {
         User sendUser = userRepo.findByUsername(username);
         Hospital sendHospital = sendUser.getWorkHospital();
         Hospital receiveHospital = hospitalRepo.findById(formDTO.getToHospitalId())
-                .orElseThrow(() -> new RuntimeException("Hospital not found"));
+                .orElseThrow(() -> new NotFoundError("Hospital not found"));
 
         TransferForm form = TransferForm.builder()
                 .sendUser(sendUser)
@@ -65,5 +66,19 @@ public class TransferFormServiceImpl implements ITransferFormService {
         return transferFormList.stream()
                 .map(TransferFormDTO::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void approveTransferForm(Integer formID, String managerUsername) {
+        TransferForm form = transferFormRepo.findById(formID)
+                .orElseThrow(() -> new NotFoundError("Form not found"));
+
+        if (form.getReceiveHospital().getManager().getUsername().equals(managerUsername)) {
+            form.setManagerAccepted(true);
+            transferFormRepo.saveAndFlush(form);
+
+        } else {
+            throw new NotFoundError("Forbidden");
+        }
     }
 }

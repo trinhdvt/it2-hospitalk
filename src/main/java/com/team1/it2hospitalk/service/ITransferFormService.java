@@ -12,4 +12,6 @@ public interface ITransferFormService {
     List<TransferFormDTO> getCreatedTransferFromByUser(String username);
 
     List<TransferFormDTO> getReceivedTransferFromByUser(String username);
+
+    void approveTransferForm(Integer formID, String managerUsername);
 }

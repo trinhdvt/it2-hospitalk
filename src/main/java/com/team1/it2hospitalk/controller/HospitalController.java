@@ -23,7 +23,7 @@ public class HospitalController {
     private final IHospitalServices hospitalServices;
 
     @GetMapping("/hospital")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> getListOfHospital(
             @PageableDefault(sort = {"createdAt"},
                     direction = Sort.Direction.DESC,

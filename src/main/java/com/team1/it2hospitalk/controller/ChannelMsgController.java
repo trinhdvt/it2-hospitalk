@@ -17,7 +17,6 @@ public class ChannelMsgController {
 
     private final IMsgServices msgServices;
 
-    //    TODO: Get all my chat room
     @PreAuthorize("hasAnyAuthority('MANAGER','USER')")
     @GetMapping("/room")
     public ResponseEntity<?> getAllMyChannel(Authentication auth) {
@@ -34,7 +33,6 @@ public class ChannelMsgController {
         return ResponseEntity.ok(msgServices.getAllMessagesInRoom(channelId));
     }
 
-    //    TODO: POST new messages to room
     @PreAuthorize("hasAnyAuthority('MANAGER','USER')")
     @PostMapping("/room/{roomID}/message")
     public ResponseEntity<?> postNewMessage(Authentication auth,

@@ -26,7 +26,7 @@ public class ChannelMsgController {
     }
 
     @GetMapping("/room/{roomID}/message")
-    // @PreAuthorize("hasAnyAuthority('MANAGER','USER')")
+    @PreAuthorize("hasAnyAuthority('MANAGER','USER')")
     public ResponseEntity<?> getAllMessagesInRoom(
             @PathVariable("roomID") Integer channelId) {
 

@@ -14,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Transactional
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
@@ -44,5 +47,14 @@ public class TransferFormServiceImpl implements ITransferFormService {
         form = transferFormRepo.saveAndFlush(form);
 
         return TransferFormDTO.toDTO(form);
+    }
+
+    @Override
+    public List<TransferFormDTO> getCreatedTransferFromByUser(String username) {
+        List<TransferForm> transferFormList = transferFormRepo.getAllBySendUser_Username(username);
+
+        return transferFormList.stream()
+                .map(TransferFormDTO::toDTO)
+                .collect(Collectors.toList());
     }
 }

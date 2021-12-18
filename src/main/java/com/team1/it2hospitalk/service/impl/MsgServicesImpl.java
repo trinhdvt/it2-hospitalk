@@ -45,6 +45,7 @@ public class MsgServicesImpl implements IMsgServices {
         return user.getChannels().stream()
                 .map(ChannelDTO::toChannelDTO)
                 .distinct()
+                .sorted(Comparator.comparing(ChannelDTO::getUpdatedAt))
                 .collect(Collectors.toList());
 
     }

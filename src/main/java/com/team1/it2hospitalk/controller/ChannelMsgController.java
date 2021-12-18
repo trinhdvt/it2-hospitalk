@@ -6,18 +6,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
+import javax.validation.constraints.NotEmpty;
+
 @RestController
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
+@Validated
 public class ChannelMsgController {
 
     private final IMsgServices msgServices;
 
-    //    TODO: Get all my chat room
     @PreAuthorize("hasAnyAuthority('MANAGER','USER')")
     @GetMapping("/room")
     public ResponseEntity<?> getAllMyChannel(Authentication auth) {
@@ -27,19 +31,18 @@ public class ChannelMsgController {
     }
 
     @GetMapping("/room/{roomID}/message")
-    // @PreAuthorize("hasAnyAuthority('MANAGER','USER')")
+    @PreAuthorize("hasAnyAuthority('MANAGER','USER')")
     public ResponseEntity<?> getAllMessagesInRoom(
             @PathVariable("roomID") Integer channelId) {
 
         return ResponseEntity.ok(msgServices.getAllMessagesInRoom(channelId));
     }
 
-    //    TODO: POST new messages to room
     @PreAuthorize("hasAnyAuthority('MANAGER','USER')")
     @PostMapping("/room/{roomID}/message")
     public ResponseEntity<?> postNewMessage(Authentication auth,
                                             @PathVariable int roomID,
-                                            String message) {
+                                            @NotEmpty() String message) {
 
         String username = auth.getName();
 

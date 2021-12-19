@@ -3,6 +3,8 @@ package com.team1.it2hospitalk.controller;
 import com.team1.it2hospitalk.service.IMsgServices;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -24,6 +26,7 @@ public class ChannelMsgController {
 
     @PreAuthorize("hasAnyAuthority('MANAGER','USER')")
     @GetMapping("/room")
+    @Cacheable("chat-room")
     public ResponseEntity<?> getAllMyChannel(Authentication auth) {
         String username = auth.getName();
         return ResponseEntity.ok(msgServices.getAllMyChannel(username));
@@ -32,6 +35,7 @@ public class ChannelMsgController {
 
     @GetMapping("/room/{roomID}/message")
     @PreAuthorize("hasAnyAuthority('MANAGER','USER')")
+    @Cacheable("chat-content")
     public ResponseEntity<?> getAllMessagesInRoom(
             @PathVariable("roomID") Integer channelId) {
 
@@ -40,6 +44,7 @@ public class ChannelMsgController {
 
     @PreAuthorize("hasAnyAuthority('MANAGER','USER')")
     @PostMapping("/room/{roomID}/message")
+    @CacheEvict(value = "chat-content", allEntries = true)
     public ResponseEntity<?> postNewMessage(Authentication auth,
                                             @PathVariable int roomID,
                                             @NotEmpty() String message) {

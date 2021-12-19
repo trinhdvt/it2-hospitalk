@@ -9,8 +9,8 @@ import lombok.Data;
 public class TransferFormDTO {
     private int formId;
     private String title;
-    private String patientProfile;
-    private String medicalSummary;
+    private FileDTO patientProfile;
+    private FileDTO medicalSummary;
     private String reason;
     private String doctorDiagnosis;
     private HospitalDTO toHospital;
@@ -25,12 +25,15 @@ public class TransferFormDTO {
         HospitalDTO receiveHospital = HospitalDTO.toHospitalDTO(form.getReceiveHospital());
         HospitalDTO sendHospital = HospitalDTO.toHospitalDTO(form.getSendHospital());
 
+        FileDTO patientProfile = new FileDTO(form.getPatientInformation());
+        FileDTO medicalSummary = new FileDTO(form.getMedicalSummary());
+
         return TransferFormDTO.builder()
                 .formId(form.getId())
                 .title(form.getTitle())
                 .doctorDiagnosis(form.getDoctorDiagnosis())
-                .medicalSummary(form.getMedicalSummary())
-                .patientProfile(form.getPatientInformation())
+                .medicalSummary(medicalSummary)
+                .patientProfile(patientProfile)
                 .reason(form.getReason())
                 .toHospital(receiveHospital)
                 .fromHospital(sendHospital)

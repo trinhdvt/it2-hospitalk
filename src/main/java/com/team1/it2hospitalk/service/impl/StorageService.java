@@ -2,7 +2,6 @@ package com.team1.it2hospitalk.service.impl;
 
 import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.team1.it2hospitalk.exception.HttpError;
@@ -38,7 +37,6 @@ public class StorageService {
         File uploadFile = convertToFile(multipartFile);
 
         PutObjectRequest objectRequest = new PutObjectRequest(fileBucket, fileName, uploadFile);
-        objectRequest.withCannedAcl(CannedAccessControlList.PublicRead);
         s3Client.putObject(objectRequest);
 
         uploadFile.delete();

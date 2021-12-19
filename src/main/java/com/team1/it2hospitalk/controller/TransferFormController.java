@@ -2,8 +2,10 @@ package com.team1.it2hospitalk.controller;
 
 import com.team1.it2hospitalk.model.entity.Role;
 import com.team1.it2hospitalk.model.request.TransferFormPayload;
+import com.team1.it2hospitalk.model.response.FileDTO;
 import com.team1.it2hospitalk.model.response.TransferFormDTO;
 import com.team1.it2hospitalk.service.ITransferFormService;
+import com.team1.it2hospitalk.service.impl.StorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.Duration;
 import java.util.List;
 
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
@@ -22,6 +25,8 @@ import java.util.List;
 public class TransferFormController {
 
     private final ITransferFormService transferService;
+    private final StorageService storageService;
+
 
     @PostMapping("/transfer-form")
     @PreAuthorize("hasAnyAuthority('USER')")
@@ -48,6 +53,12 @@ public class TransferFormController {
             listOfDTOs = transferService.getReceivedTransferFromByUser(username);
         }
 
+        // get accessible links for resource
+        listOfDTOs.forEach(form -> {
+            setAccessibleUrl(form.getMedicalSummary());
+            setAccessibleUrl(form.getPatientProfile());
+        });
+
         return ResponseEntity.ok(listOfDTOs);
     }
 
@@ -60,4 +71,12 @@ public class TransferFormController {
 
         return ResponseEntity.noContent().build();
     }
+
+    private void setAccessibleUrl(FileDTO fileDTO) {
+        Duration expireTime = Duration.ofMinutes(30);
+
+        String url = storageService.getAccessUrl(fileDTO.getFileName(), expireTime);
+        fileDTO.setFileUrl(url);
+    }
+
 }

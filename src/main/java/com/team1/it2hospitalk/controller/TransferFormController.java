@@ -8,6 +8,8 @@ import com.team1.it2hospitalk.service.ITransferFormService;
 import com.team1.it2hospitalk.service.impl.StorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -30,6 +32,7 @@ public class TransferFormController {
 
     @PostMapping("/transfer-form")
     @PreAuthorize("hasAnyAuthority('USER')")
+    @CacheEvict(value = "transfer-form", allEntries = true)
     public ResponseEntity<?> createTransferForm(Authentication auth,
                                                 @Valid TransferFormPayload formDTO) {
         String username = auth.getName();
@@ -40,6 +43,7 @@ public class TransferFormController {
 
     @GetMapping("/transfer-form")
     @PreAuthorize("hasAnyAuthority('USER', 'MANAGER')")
+    @Cacheable(cacheNames = "transfer-form")
     public ResponseEntity<?> getCreatedTransferForm(Authentication auth) {
         String username = auth.getName();
         boolean isManager = auth.getAuthorities().contains(Role.MANAGER);
@@ -64,6 +68,7 @@ public class TransferFormController {
 
     @PutMapping("/transfer-form/{formID}")
     @PreAuthorize("hasAnyAuthority('MANAGER')")
+    @CacheEvict(value = "transfer-form", allEntries = true)
     public ResponseEntity<?> approveTransferForm(@PathVariable Integer formID,
                                                  Authentication auth) {
         String managerUsername = auth.getName();

@@ -53,6 +53,8 @@ public class SecurityServices {
         payload.put("phone", user.getPhoneNumber());
         payload.put("address", user.getAddress());
         payload.put("avatar_url", user.getAvatarUrl());
+        payload.put("from",user.getWorkHospital().getName());
+        payload.put("location", user.getWorkHospital().getAddress());
 
         Date now = new Date();
         Date expiresDate = new Date(now.getTime() + this.JWT_EXPIRE_TIME);
